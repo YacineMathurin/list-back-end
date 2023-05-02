@@ -21,6 +21,16 @@ import { join } from 'path';
 export class MoviesController {
   constructor(private moviesService: MoviesService) {}
 
+  // Downloading a file
+  @Get('thumbnail/:filename')
+  getAssetsRepo(@Param() params: { filename: string }) {
+    console.log('Query', params);
+    const file = createReadStream(
+      join(process.cwd(), '/uploads/' + params.filename),
+    );
+    return new StreamableFile(file);
+  }
+
   @Get()
   async getMovies() {
     return await this.moviesService.fetchMovies();
