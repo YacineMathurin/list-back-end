@@ -16,7 +16,6 @@ export class MoviesController {
   constructor(private moviesService: MoviesService) {}
   @Get()
   async getMovies() {
-    // return `Hello word`;
     return await this.moviesService.fetchMovies();
   }
 
@@ -24,7 +23,7 @@ export class MoviesController {
   async addMovie(@Body() movie: AddMovieDto) {
     console.log('Movie received', movie);
 
-    // return await this.moviesService.addMovie(movie);
+    return await this.moviesService.addMovie(movie);
   }
 
   @Post('upload')
