@@ -11,8 +11,8 @@ export class Movie {
   @Column()
   description: string;
 
-  @Column({ type: 'longblob' })
-  thumbnail: Buffer;
+  @Column()
+  thumbnail: string;
 
   @Column()
   createdAt: Date;

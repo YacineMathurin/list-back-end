@@ -21,5 +21,5 @@ export type CreateProfileType = {
 export type AddMovieType = {
   name: string;
   description: string;
-  thumbnail: Buffer;
+  thumbnail: string;
 };

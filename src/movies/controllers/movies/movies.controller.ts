@@ -2,18 +2,25 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Req,
+  StreamableFile,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AddMovieDto } from 'src/dtos/add-movie.dtos';
 import { MoviesService } from 'src/movies/services/movies/movies.service';
-import { Express } from 'express';
+import { Express, Request } from 'express';
+import { diskStorage } from 'multer';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 
 @Controller('movie')
 export class MoviesController {
   constructor(private moviesService: MoviesService) {}
+
   @Get()
   async getMovies() {
     return await this.moviesService.fetchMovies();
@@ -27,7 +34,16 @@ export class MoviesController {
   }
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads/',
+        filename: (req, file, callback) => {
+          callback(null, `${file.fieldname} - ${Date.now()}.jpeg`);
+        },
+      }),
+    }),
+  )
   async upload(
     @UploadedFile() file: Express.Multer.File,
     @Body() rest: { name: string; description: string },
@@ -36,11 +52,9 @@ export class MoviesController {
     const movie = {
       name: rest.name,
       description: rest.description,
-      thumbnail: file.buffer,
+      thumbnail: `${file.filename}`,
     };
-    console.log('Rest of vals', file, rest);
-
     await this.moviesService.addMovie(movie);
-    return { msg: `Movie saved !` };
+    return { msg: `File saved` };
   }
 }

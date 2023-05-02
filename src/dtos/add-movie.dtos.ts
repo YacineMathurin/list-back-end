@@ -9,5 +9,5 @@ export class AddMovieDto {
   description: string;
 
   @IsNotEmpty()
-  thumbnail: Buffer;
+  thumbnail: string;
 }
