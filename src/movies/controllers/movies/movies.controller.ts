@@ -56,11 +56,11 @@ export class MoviesController {
   )
   async upload(
     @UploadedFile() file: Express.Multer.File,
-    @Body() rest: { name: string; description: string },
+    @Body() rest: { title: string; description: string },
   ) {
-    console.log(typeof file, file, typeof file.buffer);
+    console.log(typeof file, file);
     const movie = {
-      name: rest.name,
+      title: rest.title,
       description: rest.description,
       thumbnail: `${file.filename}`,
     };

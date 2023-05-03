@@ -6,7 +6,7 @@ export class Movie {
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @Column()
   description: string;

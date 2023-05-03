@@ -3,7 +3,7 @@ import { IsNotEmpty } from 'class-validator';
 
 export class AddMovieDto {
   @IsNotEmpty()
-  name: string;
+  title: string;
 
   @IsNotEmpty()
   description: string;

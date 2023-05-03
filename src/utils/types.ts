@@ -19,7 +19,7 @@ export type CreateProfileType = {
 // Movie
 
 export type AddMovieType = {
-  name: string;
+  title: string;
   description: string;
   thumbnail: string;
 };
