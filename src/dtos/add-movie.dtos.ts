@@ -1,4 +1,3 @@
-import { Blob } from 'buffer';
 import { IsNotEmpty } from 'class-validator';
 
 export class AddMovieDto {

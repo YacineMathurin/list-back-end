@@ -4,7 +4,6 @@ import {
   Get,
   Param,
   Post,
-  Req,
   StreamableFile,
   UploadedFile,
   UseInterceptors,
@@ -16,6 +15,7 @@ import { Express, Request } from 'express';
 import { diskStorage } from 'multer';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { DeleteMovieDto } from 'src/dtos/delete-movie.dtos';
 
 @Controller('movie')
 export class MoviesController {
@@ -66,5 +66,10 @@ export class MoviesController {
     };
     await this.moviesService.addMovie(movie);
     return { msg: `File saved` };
+  }
+
+  @Post('delete')
+  async deleteMovie(@Body() deleteMovieDto: DeleteMovieDto) {
+    return await this.moviesService.deleteMovie(deleteMovieDto);
   }
 }

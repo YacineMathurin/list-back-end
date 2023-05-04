@@ -23,3 +23,8 @@ export type AddMovieType = {
   description: string;
   thumbnail: string;
 };
+
+export type DeleteMovieType = {
+  id: string;
+  thumbnailPath: string;
+};
