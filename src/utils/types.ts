@@ -24,6 +24,13 @@ export type AddMovieType = {
   thumbnail: string;
 };
 
+export type UpdateMovieType = {
+  id: number;
+  title?: string;
+  description?: string;
+  thumbnail?: string;
+};
+
 export type DeleteMovieType = {
   id: string;
   thumbnailPath: string;

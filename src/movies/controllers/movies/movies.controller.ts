@@ -3,19 +3,23 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   StreamableFile,
   UploadedFile,
   UseInterceptors,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AddMovieDto } from 'src/dtos/add-movie.dtos';
 import { MoviesService } from 'src/movies/services/movies/movies.service';
-import { Express, Request } from 'express';
+import { Express } from 'express';
 import { diskStorage } from 'multer';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import { DeleteMovieDto } from 'src/dtos/delete-movie.dtos';
+import { UpdateMovieDto } from 'src/dtos/update-movie.dtos';
 
 @Controller('movie')
 export class MoviesController {
@@ -45,7 +49,7 @@ export class MoviesController {
 
   @Post('upload')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('thumbnail', {
       storage: diskStorage({
         destination: './uploads/',
         filename: (req, file, callback) => {
@@ -68,8 +72,39 @@ export class MoviesController {
     return { msg: `File saved` };
   }
 
+  @Patch('update')
+  @UseInterceptors(
+    FileInterceptor('thumbnail', {
+      storage: diskStorage({
+        destination: './uploads/',
+        filename: (req, file, callback) => {
+          callback(null, `${file?.fieldname} - ${Date.now()}.jpeg`);
+        },
+      }),
+    }),
+  )
+  async updateMovie(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updateMovieDto: UpdateMovieDto,
+  ) {
+    const movieDetails = {
+      ...(file && { thumbnail: file.filename }),
+      ...updateMovieDto,
+    };
+
+    console.log('Movie Details', movieDetails);
+
+    try {
+      return await this.moviesService.updateMovie(movieDetails);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   @Post('delete')
   async deleteMovie(@Body() deleteMovieDto: DeleteMovieDto) {
+    console.log('deleteMovieDto', deleteMovieDto);
+
     return await this.moviesService.deleteMovie(deleteMovieDto);
   }
 }
