@@ -19,7 +19,7 @@ import { join } from 'path';
 import { DeleteMovieDto } from 'src/dtos/delete-movie.dtos';
 import { UpdateMovieDto } from 'src/dtos/update-movie.dtos';
 
-@Controller('movie')
+@Controller('movies')
 export class MoviesController {
   constructor(private moviesService: MoviesService) {}
 
