@@ -8,8 +8,6 @@ import {
   StreamableFile,
   UploadedFile,
   UseInterceptors,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AddMovieDto } from 'src/dtos/add-movie.dtos';
@@ -28,7 +26,6 @@ export class MoviesController {
   // Downloading a file
   @Get('thumbnail/:filename')
   getAssetsRepo(@Param() params: { filename: string }) {
-    console.log('Query', params);
     const file = createReadStream(
       join(process.cwd(), '/uploads/' + params.filename),
     );
@@ -42,8 +39,6 @@ export class MoviesController {
 
   @Post()
   async addMovie(@Body() movie: AddMovieDto) {
-    console.log('Movie received', movie);
-
     return await this.moviesService.addMovie(movie);
   }
 
@@ -62,7 +57,6 @@ export class MoviesController {
     @UploadedFile() file: Express.Multer.File,
     @Body() rest: { title: string; description: string },
   ) {
-    console.log(typeof file, file);
     const movie = {
       title: rest.title,
       description: rest.description,
@@ -92,8 +86,6 @@ export class MoviesController {
       ...updateMovieDto,
     };
 
-    console.log('Movie Details', movieDetails);
-
     try {
       return await this.moviesService.updateMovie(movieDetails);
     } catch (error) {
@@ -103,8 +95,6 @@ export class MoviesController {
 
   @Post('delete')
   async deleteMovie(@Body() deleteMovieDto: DeleteMovieDto) {
-    console.log('deleteMovieDto', deleteMovieDto);
-
     return await this.moviesService.deleteMovie(deleteMovieDto);
   }
 }
